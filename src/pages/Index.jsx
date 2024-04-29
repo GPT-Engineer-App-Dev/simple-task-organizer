@@ -2,7 +2,7 @@
 // Use chakra-ui
 import React from 'react';
 import { Box, Input, Button, List, ListItem, ListIcon, IconButton, useToast, Link } from '@chakra-ui/react';
-import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+import { FaTrash, FaCheckCircle, FaRegCircle, FaCheck } from 'react-icons/fa';
 
 const Index = () => {
   const [tasks, setTasks] = React.useState([]);
@@ -58,16 +58,27 @@ const Index = () => {
               cursor="pointer"
             />
             {editingId === task.id ? (
-              <Input
-                value={task.text}
-                onChange={(e) => {
-                  const newText = e.target.value;
-                  setTasks(tasks.map(t => t.id === task.id ? { ...t, text: newText } : t));
-                }}
-                onBlur={() => setEditingId(null)}
-                size="md"
-                autoFocus
-              />
+              <>
+                <Input
+                  value={task.text}
+                  onChange={(e) => {
+                    const newText = e.target.value;
+                    setTasks(tasks.map(t => t.id === task.id ? { ...t, text: newText } : t));
+                  }}
+                  onBlur={() => setEditingId(null)}
+                  size="md"
+                  autoFocus
+                />
+                <IconButton
+                  icon={<FaCheck />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingId(null);
+                  }}
+                  colorScheme="green"
+                  aria-label="Confirm edit"
+                />
+              </>
             ) : (
               <Box flex="1" as="span" ml={2} textDecoration={task.isCompleted ? 'line-through' : 'none'}>
                 {task.text}
