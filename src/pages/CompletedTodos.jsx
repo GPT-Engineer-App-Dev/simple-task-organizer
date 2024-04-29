@@ -6,16 +6,14 @@ const CompletedTodos = () => {
   const [tasks, setTasks] = React.useState([]);
 
   React.useEffect(() => {
-    const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-    if (storedCompletedTasks) {
-      setTasks(storedCompletedTasks);
-    }
+    const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+    setTasks(storedCompletedTasks.filter(task => task.isCompleted));
   }, []);
 
   if (tasks.length === 0) {
     return (
       <Box p={5} textAlign="center">
-        <Text fontSize="xl">No completed tasks yet!</Text>
+        <Text fontSize="xl" color="gray.500">You have not completed any tasks yet.</Text>
       </Box>
     );
   }
