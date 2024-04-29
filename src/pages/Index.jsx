@@ -5,6 +5,12 @@ import { Box, Input, Button, List, ListItem, ListIcon, IconButton, useToast, Lin
 import { FaTrash, FaCheckCircle, FaRegCircle, FaCheck } from 'react-icons/fa';
 
 const Index = () => {
+  React.useEffect(() => {
+    const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+    if (storedCompletedTasks) {
+      setTasks(tasks => [...tasks, ...storedCompletedTasks]);
+    }
+  }, []);
   const [tasks, setTasks] = React.useState([]);
   const [editingId, setEditingId] = React.useState(null);
   const [input, setInput] = React.useState('');
@@ -31,7 +37,9 @@ const Index = () => {
 
   const handleToggleTaskCompletion = (id) => {
     if (id !== editingId) {
-      setTasks(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
+      const updatedTasks = tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task);
+      setTasks(updatedTasks);
+      localStorage.setItem('completedTasks', JSON.stringify(updatedTasks.filter(task => task.isCompleted)));
     }
   };
 
