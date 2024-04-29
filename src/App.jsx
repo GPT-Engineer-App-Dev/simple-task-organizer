@@ -10,7 +10,7 @@ function App() {
           <Text fontSize="xl" fontWeight="bold" color="white">Todo App</Text>
           <Flex>
             <Link href="/" p={2} color="white" _hover={{ textDecoration: 'underline' }}>Home</Link>
-            <Link href="/about" p={2} color="white" _hover={{ textDecoration: 'underline' }}>About</Link>
+            
           </Flex>
         </Flex>
       </Box>
