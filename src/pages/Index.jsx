@@ -1,7 +1,7 @@
 // Complete the Index page component here
 // Use chakra-ui
 import React from 'react';
-import { Box, Input, Button, List, ListItem, ListIcon, IconButton, useToast } from '@chakra-ui/react';
+import { Box, Input, Button, List, ListItem, ListIcon, IconButton, useToast, Link } from '@chakra-ui/react';
 import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 
 const Index = () => {
@@ -63,6 +63,10 @@ const Index = () => {
           </ListItem>
         ))}
       </List>
+    <Box as="footer" p={4} bg="gray.100" mt={10} textAlign="center">
+      <Box>Copyright © 2023 Your Company</Box>
+      <Link href="/privacy-policy" color="blue.500">Privacy Policy</Link>
+    </Box>
     </Box>
   );
 };
