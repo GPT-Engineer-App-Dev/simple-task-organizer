@@ -6,6 +6,7 @@ import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 
 const Index = () => {
   const [tasks, setTasks] = React.useState([]);
+  const [editingId, setEditingId] = React.useState(null);
   const [input, setInput] = React.useState('');
   const toast = useToast();
 
@@ -29,7 +30,9 @@ const Index = () => {
   };
 
   const handleToggleTaskCompletion = (id) => {
-    setTasks(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
+    if (id !== editingId) {
+      setTasks(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
+    }
   };
 
   return (
@@ -44,19 +47,38 @@ const Index = () => {
       <Button onClick={handleAddTask} colorScheme="blue" mb={4}>Add Task</Button>
       <List spacing={3}>
         {tasks.map(task => (
-          <ListItem key={task.id} d="flex" alignItems="center">
+          <ListItem key={task.id} d="flex" alignItems="center" onClick={() => setEditingId(task.id)}>
             <ListIcon
               as={task.isCompleted ? FaCheckCircle : FaRegCircle}
               color={task.isCompleted ? 'green.500' : 'gray.500'}
-              onClick={() => handleToggleTaskCompletion(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleTaskCompletion(task.id);
+              }}
               cursor="pointer"
             />
-            <Box flex="1" as="span" ml={2} textDecoration={task.isCompleted ? 'line-through' : 'none'}>
-              {task.text}
-            </Box>
+            {editingId === task.id ? (
+              <Input
+                value={task.text}
+                onChange={(e) => {
+                  const newText = e.target.value;
+                  setTasks(tasks.map(t => t.id === task.id ? { ...t, text: newText } : t));
+                }}
+                onBlur={() => setEditingId(null)}
+                size="md"
+                autoFocus
+              />
+            ) : (
+              <Box flex="1" as="span" ml={2} textDecoration={task.isCompleted ? 'line-through' : 'none'}>
+                {task.text}
+              </Box>
+            )}
             <IconButton
               icon={<FaTrash />}
-              onClick={() => handleDeleteTask(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteTask(task.id);
+              }}
               colorScheme="red"
               aria-label="Delete task"
             />
