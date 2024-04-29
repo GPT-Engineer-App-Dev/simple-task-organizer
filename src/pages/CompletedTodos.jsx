@@ -2,21 +2,26 @@ import React from 'react';
 import { Box, List, ListItem, ListIcon, Text } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const CompletedTodos = ({ todos }) => {
-  const completedTodos = todos.filter(todo => todo.isCompleted);
+const CompletedTodos = ({ tasks }) => {
+  const completedTasks = tasks.filter(task => task.isCompleted);
+
+  if (completedTasks.length === 0) {
+    return (
+      <Box p={5} textAlign="center">
+        <Text fontSize="xl">No completed tasks yet!</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box p={5}>
-      <Text fontSize="2xl" fontWeight="bold" mb={4}>Completed Tasks</Text>
       <List spacing={3}>
-        {completedTodos.length > 0 ? completedTodos.map(todo => (
-          <ListItem key={todo.id} d="flex" alignItems="center">
+        {completedTasks.map(task => (
+          <ListItem key={task.id} d="flex" alignItems="center">
             <ListIcon as={FaCheckCircle} color="green.500" />
-            <Box as="span" ml={2} textDecoration="line-through">
-              {todo.text}
-            </Box>
+            <Text ml={2} textDecoration="line-through">{task.text}</Text>
           </ListItem>
-        )) : <Text>No completed tasks.</Text>}
+        ))}
       </List>
     </Box>
   );
