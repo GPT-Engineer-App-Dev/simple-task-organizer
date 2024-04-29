@@ -6,10 +6,8 @@ import { FaTrash, FaCheckCircle, FaRegCircle, FaCheck } from 'react-icons/fa';
 
 const Index = () => {
   React.useEffect(() => {
-    const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-    if (storedCompletedTasks) {
-      setTasks(tasks => [...tasks, ...storedCompletedTasks]);
-    }
+    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(storedTasks);
   }, []);
   const [tasks, setTasks] = React.useState([]);
   const [editingId, setEditingId] = React.useState(null);
@@ -27,7 +25,9 @@ const Index = () => {
       return;
     }
     const newTask = { id: Date.now(), text: input, isCompleted: false };
-    setTasks([...tasks, newTask]);
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     setInput('');
   };
 
@@ -39,7 +39,7 @@ const Index = () => {
     if (id !== editingId) {
       const updatedTasks = tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task);
       setTasks(updatedTasks);
-      localStorage.setItem('completedTasks', JSON.stringify(updatedTasks.filter(task => task.isCompleted)));
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
   };
 
